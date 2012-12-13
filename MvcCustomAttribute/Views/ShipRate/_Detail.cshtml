@@ -1,0 +1,12 @@
+﻿@model MvcCustomAttribute.Models.ShipRateDetail
+
+@Html.ValidationSummary()
+@if (Model != null) {
+<h2>Shipping Rate Details</h2>
+<ul>
+    <li><strong>Zip Code:</strong> @Model.ZipCode</li>
+    <li><strong>Weight:</strong> @Model.Weight lbs.</li>
+    <li><strong>Number of Boxes:</strong> @Model.NumberOfBoxes</li>
+    <li><strong>Total Cost:</strong> @Helper.Currency(Model.TotalCost)</li>
+</ul>
+}

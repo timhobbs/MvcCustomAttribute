@@ -1,0 +1,60 @@
+﻿@helper Currency(decimal value) {
+    @value.ToString("C")
+}
+
+@helper Currency(double value) {
+    @value.ToString("C")
+}
+
+@helper LoadPanel(string button, string wrapper, string text = "Processing...", string imgpath = "/Content/loading.gif") {
+<script type="text/javascript">
+    $(function () {
+        $("#@button").click(function () {
+            var valid = $(this).parents("form:first").valid();
+            if (!valid) {
+                return;
+            }
+            var $dr = $("#@wrapper");
+            var height = $dr.height();
+            var $div = $("<div>").css({ "height": height + "px", "background-color": "#FFF" }).append("<p>").css({ "padding-top": "50px", "text-align": "center" }).html("<img src='@imgpath' alt='' /><br />@text")
+            $dr.html($div);
+        });
+    });
+</script>
+}
+
+@helper Focus(string id) {
+<script type="text/javascript">
+    $(function () {
+        $("#@id").focus().select();
+    });
+</script>
+}
+
+@helper DynamicDropDowns() {
+<script type="text/javascript">
+    function listChanged($list, $target, url) {
+        var listId = $list.val();
+        if (listId == "") { // User selected first option, so clear and disable the list
+            $target.empty();
+            enableList($target, false);
+            return;
+        }
+        $.getJSON(url, { id: listId }, function (data) {
+            $target.empty(); // Clear the list
+            $.each(data, function (idx, item) { // Add the data
+                $target.append($("<option/>",
+                {
+                    value: item.Value,
+                    text: item.Text
+                }));
+            });
+            enableList($target, true); // Enable the list
+        });
+    }
+
+    function enableList($list, enabled) {
+        $list.attr("disabled", enabled ? null : "disabled");
+    }
+</script>
+}

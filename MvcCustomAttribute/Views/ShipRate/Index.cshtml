@@ -1,0 +1,64 @@
+﻿@model MvcCustomAttribute.Models.ShipRate
+
+@{
+    ViewBag.Title = "Shipping Rates Lookup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header>
+    <div class="container">
+        <h1>Shipping Rates Lookup</h1>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <section class="span6">
+            @using (Ajax.BeginForm("ShipRateLookup", "Tools", 
+                    new AjaxOptions { 
+                        InsertionMode = InsertionMode.Replace, 
+                        UpdateTargetId = "rate-detail", 
+                        OnComplete = "complete" 
+                    }, 
+                    new { id = "rate-form", @class = "form-horizontal" })) { 
+                @Html.ValidationSummary()
+                <div class="control-group">
+                    @Html.ControlLabelFor(model => model.Carrier)
+                    <div class="controls">
+                        @Html.DropDownList("Carrier", Model.Carriers, new { @class = "input-xlarge" })<br />
+                        @Html.DropDownList("ShipMethod", Model.ShipMethods, new { @class = "input-xlarge" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.ControlLabelFor(model => model.Weight)
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Weight, new { @class = "input-xlarge" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.ControlLabelFor(model => model.ZipCode)
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.ZipCode, new { @class = "input-xlarge" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.ControlLabelFor(model => model.Surcharge)
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Surcharge, new { @class = "input-xlarge" })<br />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn" id="submit">Rate Lookup</button>
+                    </div>
+                </div>
+            }
+        </section>
+        <section class="span6">
+            <div id="rate-detail" class="well" style="display: none;"></div>
+        </section>
+    </div>
+</div>
+@Helper.Focus("Carrier")
+@Helper.LoadPanel("submit", "rate-detail")
+@Helper.DynamicDropDowns()
+<script type="text/javascript" src="/Scripts/app.js"></script>
